@@ -29,6 +29,7 @@ textarea {
 
 .authorInput {
     /* font-style: bold; */
+    text-align: center;
     margin-right: 1rem;
 }
 
@@ -38,5 +39,6 @@ textarea {
 }
 
 .linkInput {
+    text-align: center;
     font-style: italic;
 }

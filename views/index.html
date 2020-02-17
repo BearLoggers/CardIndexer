@@ -30,23 +30,26 @@
                 <p style="margin: 0;">{{source.author}} <b>"{{source.title}}"</b> &mdash; <i>{{source.link}}</i></p>
                 {% endfor %}
 
-                <button type="button" class="btn btn-info editbutton">Редактировать</button>
+                <button type="button" class="btn btn-info editbutton" onclick="edit({{card.id}})">Редактировать</button>
             </div>
         </div>
         {% endfor %}
 
         <div class="card mt-5" style="margin-bottom: 10rem;">
             <div class="card-body">
-                <h5 class="card-title"><input type="text" placeholder="Заголовок"></h5>
-                <h6 class="card-subtitle mb-4 text-muted">(<input placeholder="Примечание (необ.)">)</h6>
+                <h5 class="card-title">
+                    <input id="titleInput" type="text" placeholder="Заголовок">
+                </h5>
+                <h6 class="card-subtitle mb-4 text-muted">
+                    (<input id="descInput" placeholder="Примечание (необ.)">)
+                </h6>
                 <!-- <p class="card-text"><textarea>Определение</textarea></p> -->
-                <textarea placeholder="Определение"></textarea>
+                <textarea id="definitionTextarea" placeholder="Определение"></textarea>
 
-                <!-- <p style="margin: 0;">{{source.author}} <b>"{{source.title}}"</b> &mdash; <i>{{source.link}}</i></p> -->
                 <div id="sources">
                     <!-- Добавляется через JS -->
                 </div>
-                <button class="btn btn-info mt-3" onclick="addEmptySource()">+</button>
+                <button class="btn btn-info mt-3" onclick="addSource()">+</button>
 
                 <button type="button" class="btn btn-success editbutton" onclick="sendCard()">Добавить</button>
             </div>
@@ -69,6 +72,9 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
     <script src="index.js"></script>
+    <script>
+        addSource();
+    </script>
 </body>
 
 </html>

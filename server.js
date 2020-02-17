@@ -1,6 +1,9 @@
 const nunjucks = require('nunjucks');
 const express = require("express");
+const bodyParser = require('body-parser');
 const app = express();
+
+app.use(bodyParser.json());
 
 nunjucks.configure('views', {
     autoescape: true,
@@ -8,41 +11,35 @@ nunjucks.configure('views', {
     noCache: true
 });
 
-const content = "Привет, это первое объяснение, которое уходит на много буков. Привет, это первое объяснение, которое уходит на много буков. Привет, это первое объяснение, которое уходит на много буков. Привет, это первое объяснение, которое уходит на много буков.";
-const cards = [];
-
-for (let i = 0; i < 1; i++) {
-    cards.push(
-        {
-            title: "Слово 1", 
-            content: content, 
-            sources: [
-                {author: "Танаев В.В.", title: "Книга Влада", link: "стр. 24 строка 20"},
-                {author: "Зубенко М.П.", title: "Книга Пэтровича", link: "стр. 1337 строка 420"}
-            ]
-        });
-    cards.push(
-        {
-            title: "Слово 2", 
-            subtitle: "В значении 'Кек'", 
-            content: content,
-            sources: [
-                {author: "Танаев В.В.", title: "Книга Влада #2", link: "стр. 42 строка 2"},
-                {author: "Зубенко М.П.", title: "Книга Пэтровича", link: "стр. 420 строка 12"}
-            ]
-        }
-    );
-}
+app.use(express.static('public'));
 
 app.get('/', (req, res) => {
+    let cards = require('./json/cards.json');
     res.render('index.html', { cards });
 });
 
 app.get('/print', (req, res) => {
+    let cards = require('./json/cards.json');
     res.render('print.html', { cards });
 });
 
-app.use(express.static('public'));
+app.get('/edit/:id', (req, res) => {
+    // Конвертация в число или NaN
+    let id = +req.params.id;
+    if (isNaN(req.params.id)) return res.sendStatus(400);
+
+    let cards = require('./json/cards.json');
+    let card = cards.find(x => x.id == id);
+
+    if (!card) return res.sendStatus(400);
+
+    res.render('edit.html', { card });
+});
+
+app.post('/postcard', (req, res) => {
+    console.log('Got body:', req.body);
+    res.send({ok: true, error: null});
+});
 
 app.listen(3000, () => {
     console.log("App is listening at :3000");
