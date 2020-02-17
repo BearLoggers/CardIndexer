@@ -1,8 +1,42 @@
-body {
-    text-align: center;
+.card {
+    margin-top: 1rem;
+    text-align: left;
 }
 
-.card {
-    margin-top: 0.5rem;
-    text-align: left;
+@media print {
+    .avoidpagebreak { page-break-inside: avoid } /* page-break-after works, as well */
+}
+
+input {
+    /* border-style: inset; */
+    padding: 0.1rem;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+}
+
+textarea {
+    width: 70%;
+    height: 10rem;
+}
+
+.editbutton {
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+    /* border-radius: 100%; */
+}
+
+.authorInput {
+    /* font-style: bold; */
+    margin-right: 1rem;
+}
+
+.nameInput {
+    text-align: center;
+    font-weight: bold;
+}
+
+.linkInput {
+    font-style: italic;
 }
