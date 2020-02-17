@@ -31,12 +31,12 @@
                 {% endfor %}
 
                 <button type="button" class="btn btn-info editbutton" onclick="edit({{card.id}})">Редактировать</button>
-                <button type="button" class="removebutton" onclick="remove({{card.id}}, {{card.title}})">x</button>
+                <button type="button" class="removebutton" onclick="remove({{card.id}}, '{{card.title}}')">x</button>
             </div>
         </div>
         {% endfor %}
 
-        <div class="card mt-5" style="margin-bottom: 10rem;">
+        <div class="card mt-5" style="margin-bottom: 2rem">
             <div class="card-body">
                 <h5 class="card-title">
                     <input id="titleInput" type="text" placeholder="Заголовок">
@@ -55,6 +55,9 @@
                 <button type="button" class="btn btn-success editbutton" onclick="sendCard()">Добавить</button>
             </div>
         </div>
+
+        <a style="margin-bottom: 10rem;" href="/print">Версия для печати</a>
+
 
     </div>
 

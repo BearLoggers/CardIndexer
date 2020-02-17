@@ -48,6 +48,8 @@ function sendCard() {
 
     sendPOST('/postcard', card).then(ans => {
         console.log(ans);
+
+        location = '/';
     }).catch(err => {
         Swal.fire(
             'О нет!',
