@@ -14,6 +14,7 @@ nunjucks.configure('views', {
 
 app.use(express.static('public'));
 
+if (!fs.existsSync('./json/cards.json')) fs.writeFileSync('./json/cards.json', '{}', 'utf8');
 let cards = require('./json/cards.json');
 
 app.get('/', (req, res) => {
