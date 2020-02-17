@@ -27,6 +27,14 @@ textarea {
     /* border-radius: 100%; */
 }
 
+.removebutton {
+    position: absolute;
+    right: 0.1rem;
+    top: 0.1rem;
+
+    border: none;
+}
+
 .authorInput {
     /* font-style: bold; */
     text-align: center;

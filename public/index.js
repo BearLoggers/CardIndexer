@@ -21,24 +21,30 @@ function sendPOST(url, body = {}, convertAnsToJSON = true) {
 }
 
 /* Функционал страницы */
-function sendCard() {
+function assembleCard() {
     const title = document.getElementById('titleInput').value,
-          desc = document.getElementById('descInput').value,
-          definition = document.getElementById('definitionTextarea').value,
-          sourceDiv = document.getElementById('sources');
+        subtitle = document.getElementById('descInput').value,
+        content = document.getElementById('definitionTextarea').value,
+        sourceDiv = document.getElementById('sources');
 
     const sources = [];
     for (const node of sourceDiv.children) {
-        const authorName = node.getElementsByClassName("authorInput")[0].value;
-        const sourceName = node.getElementsByClassName("nameInput")[0].value;
-        const sourceLink = node.getElementsByClassName("linkInput")[0].value;
+        const author = node.getElementsByClassName("authorInput")[0].value;
+        const title = node.getElementsByClassName("nameInput")[0].value;
+        const link = node.getElementsByClassName("linkInput")[0].value;
 
-        sources.push({ authorName, sourceName, sourceLink });
+        sources.push({ author, title, link });
     }
 
     const card = {
-        title, desc, definition, sources
+        title, subtitle, content, sources
     };
+
+    return card;
+}
+
+function sendCard() {
+    const card = assembleCard();
 
     sendPOST('/postcard', card).then(ans => {
         console.log(ans);
@@ -55,6 +61,51 @@ function sendCard() {
 
 function edit(id) {
     location = `/edit/${id}`;
+}
+
+function sendEdit(id) {
+    const card = assembleCard();
+
+    sendPOST(`/postedit/${id}`, card).then(ans => {
+        console.log(ans);
+        location = '/';
+    }).catch(err => {
+        Swal.fire(
+            'О нет!',
+            'Что-то прошло не так при отправке! Информация отправлена в консоль браузера (F12)',
+            'error'
+        );
+
+        console.error(err);
+    });
+}
+
+function remove(id, title) {
+    Swal.fire({
+        title: `Вы уверены, что хотите удалить «${title}»?`,
+        text: 'Возврат слова может быть произведён только из бэкапа.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Да, удалить!',
+        cancelButtonText: 'Отмена'
+    }).then(result => {
+        if (result.value) {
+            sendPOST(`/delete`, { id }).then(ans => {
+                console.log(ans);
+                location = '/';
+            }).catch(err => {
+                Swal.fire(
+                    'О нет!',
+                    'Что-то прошло не так при попытке удалить! Информация отправлена в консоль браузера (F12)',
+                    'error'
+                );
+
+                console.error(err);
+            });
+        }
+    })
 }
 
 let sourceCnt = 0;
