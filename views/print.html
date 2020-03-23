@@ -26,9 +26,9 @@
                 {% endif %}
                 <p class="card-text">{{card.content}}</p>
 
-                {% for source in card.sources %}
-                <p style="margin: 0;">{{source.author}} <b>"{{source.title}}"</b> &mdash; <i>{{source.link}}</i></p>
-                {% endfor %}
+                {% if sources[card.source] %}
+                <p style="margin: 0;">{{sources[card.source].author}} <i>{{sources[card.source].title}}</i></p>
+                {% endif %}
             </div>
         </div>
         {% endfor %}

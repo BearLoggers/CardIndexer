@@ -16,6 +16,9 @@
 
 <body>
     <div class="container">
+        <div class="w-100 text-center">
+            <a class="btn btn-info mt-3" href="#printLink" role="button">Перейти вниз</a>
+        </div>
 
         {% for card in cards %}
         <div class="card">
@@ -26,9 +29,7 @@
                 {% endif %}
                 <p class="card-text">{{card.content}}</p>
 
-                {% for source in card.sources %}
-                <p style="margin: 0;">{{source.author}} <b>"{{source.title}}"</b> &mdash; <i>{{source.link}}</i></p>
-                {% endfor %}
+                <p style="margin: 0;">{{sources[card.source].author}} <i>{{sources[card.source].title}}</i></p>
 
                 <button type="button" class="btn btn-info editbutton" onclick="edit({{card.id}})">Редактировать</button>
                 <button type="button" class="removebutton" onclick="remove({{card.id}}, '{{card.title}}')">x</button>
@@ -47,17 +48,54 @@
                 <!-- <p class="card-text"><textarea>Определение</textarea></p> -->
                 <textarea id="definitionTextarea" placeholder="Определение"></textarea>
 
-                <div id="sources">
-                    <!-- Добавляется через JS -->
+                <p id="source">Источник: [<span id="sourceNumber">Не выбран</span>]</p>
+
+                <div id="sourceButtons">
+                    <button class="btn btn-info" id="addSourceButton" onclick="modifySources()">Редактировать источники</button>
+                    <!-- Default dropright button -->
+                    <div class="btn-group dropright">
+                        <select onchange="changeSource(`optionSel${this.selectedIndex}`)">
+                            <option disabled selected>Источник</option>
+                            {% for source in sourcesArr %}
+                            <option id="optionSel{{loop.index}}" value="{{source.id}}" title="{{loop.index}}">
+                                {{source.author}} "{{source.title}}" [{{loop.index}}]
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
                 </div>
-                <button class="btn btn-info mt-3" onclick="addSource()">+</button>
+
+                <div id="addSourceDiv" class="mt-3 mb-5 text-center p-2">
+                    <div class="w-100 h-100">
+                    <button class="btn btn-danger" id="closeButton" onclick="closeSource()">x</button>
+                    </div>
+
+                    <p class="mr-2">Удалить:</p>
+                    <select class="btn-danger" onchange="deleteSource(`option${this.selectedIndex}`)">
+                        <option disabled selected>Источник</option>
+                        {% for source in sourcesArr %}
+                        <option id="option{{loop.index}}" value="{{source.id}}" title="{{source.title}} [{{loop.index}}]">
+                            {{source.author}} "{{source.title}}" [{{loop.index}}]
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <br>
+
+                    <hr>
+
+                    "<input class="mt-3 text-center" id="sourceTitleInput" placeholder="Название" value="">"
+                    <input class="text-center" id="sourceAuthorInput" placeholder="Автор (необ.)" value=""><br>
+
+                    <button class="btn btn-info mt-3" id="confirmSourceButton" onclick="sendSource()">Добавить новый источник</button>
+                </div>
+
 
                 <button type="button" class="btn btn-success editbutton" onclick="sendCard()">Добавить</button>
             </div>
         </div>
 
-        <a style="margin-bottom: 10rem;" href="/print">Версия для печати</a>
-
+        <a style="margin-bottom: 10rem;" href="/print" id="printLink">Версия для печати</a>
+        <br><br>
 
     </div>
 
@@ -74,11 +112,9 @@
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
 
     <script src="index.js"></script>
-    <script>
-        addSource();
-    </script>
 </body>
 
 </html>

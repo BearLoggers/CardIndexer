@@ -35,6 +35,17 @@ textarea {
     border: none;
 }
 
+#addSourceDiv {
+    outline: 1px solid black;
+    width: auto;
+    display: none;
+}
+
+#closeButton {
+    position: absolute;
+    right: 30px;
+}
+
 .authorInput {
     /* font-style: bold; */
     text-align: center;
