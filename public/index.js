@@ -30,7 +30,10 @@ function assembleCard() {
     const source = currentSource;
 
     const card = {
-        title, subtitle, content, source
+        title,
+        subtitle,
+        content,
+        source
     };
 
     return card;
@@ -40,7 +43,10 @@ function assembleSource() {
     const title = document.getElementById('sourceTitleInput').value,
         author = document.getElementById('sourceAuthorInput').value || null;
 
-    return { title, author };
+    return {
+        title,
+        author
+    };
 }
 
 function sendCard() {
@@ -86,6 +92,39 @@ function sendEdit(id) {
     });
 }
 
+const stessMap = {
+    'А': 'А́',
+    'а': 'а́',
+    'Е': 'Е́',
+    'е': 'е́',
+    'И': 'И́',
+    'и': 'и́',
+    'О': 'О́',
+    'о': 'о́',
+    'У': 'У́',
+    'у': 'у́',
+    'Ы': 'Ы́',
+    'ы': 'ы́',
+    'Э': 'Э́',
+    'э': 'э́',
+    'Ю': 'Ю́',
+    'ю': 'ю́',
+    'Я': 'Я́',
+    'я': 'я́'
+}
+
+function markStress() {
+    let titleInput = document.getElementById('titleInput');
+    if (titleInput.selectionStart != undefined) {
+        let startPos = titleInput.selectionStart;
+        let endPos = titleInput.selectionEnd;
+        selectedText = titleInput.value.substring(startPos, endPos);
+        console.log(selectedText);
+        if (selectedText != "" && stessMap[selectedText])
+            titleInput.value = titleInput.value.slice(0, startPos) + stessMap[selectedText] + titleInput.value.slice(endPos);
+    }
+}
+
 function remove(id, title) {
     Swal.fire({
         title: `Вы уверены, что хотите удалить «${title}»?`,
@@ -98,7 +137,9 @@ function remove(id, title) {
         cancelButtonText: 'Отмена'
     }).then(result => {
         if (result.value) {
-            sendPOST(`/delete`, { id }).then(ans => {
+            sendPOST(`/delete`, {
+                id
+            }).then(ans => {
                 console.log(ans);
                 location = '/';
             }).catch(err => {
@@ -115,6 +156,7 @@ function remove(id, title) {
 }
 
 let currentSource = null;
+
 function changeSource(elemID) {
     const option = document.getElementById(elemID);
     const id = option.value;
@@ -131,20 +173,26 @@ function modifySources() {
 
 function saveInputToCookies() {
     const title = document.getElementById('titleInput').value,
-    subtitle = document.getElementById('descInput').value,
-    content = document.getElementById('definitionTextarea').value;
+        subtitle = document.getElementById('descInput').value,
+        content = document.getElementById('definitionTextarea').value;
 
-    Cookies.set('title', title, { path: '' });
-    Cookies.set('subtitle', subtitle, { path: '' });
-    Cookies.set('content', content, { path: '' });
+    Cookies.set('title', title, {
+        path: ''
+    });
+    Cookies.set('subtitle', subtitle, {
+        path: ''
+    });
+    Cookies.set('content', content, {
+        path: ''
+    });
 }
 
 setInterval(() => saveInputToCookies(), 5000);
 
 function loadInputFromCookies() {
     const title = Cookies.get('title'),
-    subtitle = Cookies.get('subtitle'),
-    content = Cookies.get('content');
+        subtitle = Cookies.get('subtitle'),
+        content = Cookies.get('content');
 
     if (title || subtitle || content) {
         document.getElementById('titleInput').value = title;
@@ -198,7 +246,9 @@ function deleteSource(elemID) {
         cancelButtonText: 'Отмена'
     }).then(result => {
         if (result.value) {
-            sendPOST(`/deletesource`, { id }).then(ans => {
+            sendPOST(`/deletesource`, {
+                id
+            }).then(ans => {
                 console.log(ans);
                 location = '/';
             }).catch(err => {

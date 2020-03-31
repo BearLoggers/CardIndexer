@@ -4,6 +4,8 @@ const express = require("express");
 const bodyParser = require('body-parser');
 const app = express();
 
+const PORT = 80;
+
 app.use(bodyParser.json());
 
 nunjucks.configure('views', {
@@ -106,8 +108,8 @@ app.post('/deletesource', (req, res) => {
     res.send({ok: true, error: null});
 });
 
-app.listen(3000, () => {
-    console.log("App is listening at :3000");
+app.listen(PORT, () => {
+    console.log(`App is listening at :${PORT}`);
 });
 
 function writeCards() {
