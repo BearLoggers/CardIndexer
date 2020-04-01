@@ -55,11 +55,11 @@ function sendCard() {
     sendPOST('/postcard', card).then(ans => {
         console.log(ans);
 
-        Cookies.remove('title');
-        Cookies.remove('subtitle');
-        Cookies.remove('content');
+        Cookies.remove('title', { path: '' });
+        Cookies.remove('subtitle', { path: '' });
+        Cookies.remove('content', { path: '' });
 
-        location = '/';
+        location.reload();
     }).catch(err => {
         Swal.fire(
             'О нет!',
@@ -80,7 +80,7 @@ function sendEdit(id) {
 
     sendPOST(`/postedit/${id}`, card).then(ans => {
         console.log(ans);
-        location = '/';
+        history.back();
     }).catch(err => {
         Swal.fire(
             'О нет!',
@@ -141,7 +141,7 @@ function remove(id, title) {
                 id
             }).then(ans => {
                 console.log(ans);
-                location = '/';
+                location.reload();
             }).catch(err => {
                 Swal.fire(
                     'О нет!',
@@ -187,7 +187,7 @@ function saveInputToCookies() {
     });
 }
 
-setInterval(() => saveInputToCookies(), 5000);
+setInterval(() => saveInputToCookies(), 1000);
 
 function loadInputFromCookies() {
     const title = Cookies.get('title'),
@@ -250,7 +250,7 @@ function deleteSource(elemID) {
                 id
             }).then(ans => {
                 console.log(ans);
-                location = '/';
+                location.reload();
             }).catch(err => {
                 Swal.fire(
                     'О нет!',

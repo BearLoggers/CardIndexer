@@ -42,6 +42,18 @@ app.get('/edit/:id', (req, res) => {
     res.render('edit.html', { card, sources, sourcesArr: sourcesToArray() });
 });
 
+app.get('/begins/:start', (req, res) => {
+    let wordStart = req.params.start.toLocaleLowerCase();
+
+    let filteredCards = cards.filter(x => {
+        let a = x.title.toLocaleLowerCase().replace(/\u0301/gi, ''); // Удаляем знак ударения
+
+        return a.startsWith(wordStart);
+    });
+
+    res.render('index.html', { cards: filteredCards, sources, sourcesArr: sourcesToArray() });
+});
+
 app.post('/postedit/:id', (req, res) => {
     // Конвертация в число или NaN
     let id = +req.params.id;
@@ -112,12 +124,26 @@ app.listen(PORT, () => {
     console.log(`App is listening at :${PORT}`);
 });
 
+let writeCardsTimer = null;
 function writeCards() {
-    fs.writeFileSync('./json/cards.json', JSON.stringify(cards), "utf8");
+    if (writeCardsTimer) clearTimeout(writeCardsTimer);
+
+    sortBy(cards, "title");
+
+    writeCardsTimer = setTimeout(() => {
+        fs.writeFileSync('./json/cards.json', JSON.stringify(cards), "utf8");
+    }, 200);
 }
 
+let writeSourcesTimer = null;
 function writeSources() {
-    fs.writeFileSync('./json/sources.json', JSON.stringify(sources), "utf8");
+    if (writeSourcesTimer) clearTimeout(writeSourcesTimer);
+
+    // sortBy(sources, "title");
+
+    writeSourcesTimer = setTimeout(() => {
+        fs.writeFileSync('./json/sources.json', JSON.stringify(sources), "utf8");
+    }, 200);
 }
 
 function readCards() {
@@ -126,6 +152,20 @@ function readCards() {
 
 function deepCopy(arr) {
     return JSON.parse(JSON.stringify(arr));
+}
+
+function sortBy(array, field) {
+    array.sort((x,y) => {
+        let a = x[field].toLocaleLowerCase();
+        let b = y[field].toLocaleLowerCase();
+
+        a = a.replace(/\u0301/gi, ''); // Удаляем знак ударения
+        b = b.replace(/\u0301/gi, ''); // Удаляем знак ударения
+
+        if (a > b) return 1;
+        if (a == b) return 0;
+        return -1;
+    });
 }
 
 function sourcesToArray() {
