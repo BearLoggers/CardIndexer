@@ -2,10 +2,12 @@ const nunjucks = require('nunjucks');
 const fs = require('fs');
 const express = require("express");
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const app = express();
 
 const PORT = 80;
 
+app.use(cookieParser());
 app.use(bodyParser.json());
 
 nunjucks.configure('views', {
@@ -21,6 +23,34 @@ let cards = require('./json/cards.json');
 
 if (!fs.existsSync('./json/sources.json')) fs.writeFileSync('./json/sources.json', '{}', 'utf8');
 let sources = require('./json/sources.json');
+
+app.post('/secretpassword', (req, res) => {
+    if (!req.body.password) return res.sendStatus(400);
+
+    return res.cookie('totallyNotAPassword', req.body.password, {maxAge: 24 * 60 * 60 * 1000}).send({resp: 'ok then'});
+});
+
+app.get('*', (req, res, next) => {
+    if (!req.cookies['totallyNotAPassword'])
+        return res.render('password.html');
+
+    if (req.cookies['totallyNotAPassword'] != 'b34rl0663r5')
+        return res.render('password.html', { wrong: true });
+
+    next();
+});
+
+app.post('*', (req, res, next) => {
+    if (req.cookies['totallyNotAPassword'] != 'b34rl0663r5')
+        return res.send({updatePage: true});
+
+    next();
+})
+
+app.get('/exit', (req, res) => {
+    res.clearCookie('totallyNotAPassword');
+    return res.redirect('/');
+});
 
 app.get('/', (req, res) => {
     res.render('index.html', { cards, sources, sourcesArr: sourcesToArray() });
