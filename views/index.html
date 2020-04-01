@@ -20,7 +20,7 @@
             <a class="btn btn-info mt-3" href="#printLink" role="button">Перейти вниз</a>
 
             <div class="input-group mb-3 w-75 pt-2" style="padding-left: 25%">
-                <input type="text" id="beginInput" class="form-control" placeholder="Фильтр (по букве или по куску слова)" aria-label="Фильтр" aria-describedby="button-addon1">
+                <input type="text" id="beginInput" onkeypress="if (event.keyCode == 13) beginFilter()" class="form-control" placeholder="Фильтр (по букве или по куску слова)" aria-label="Фильтр" aria-describedby="button-addon1">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary" type="button" id="button-addon1" onclick="beginFilter()">Поиск</button>
                 </div>
