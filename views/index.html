@@ -18,6 +18,17 @@
     <div class="container">
         <div class="w-100 text-center">
             <a class="btn btn-info mt-3" href="#printLink" role="button">Перейти вниз</a>
+
+            <div class="input-group mb-3 w-75 pt-2" style="padding-left: 25%">
+                <input type="text" id="beginInput" class="form-control" placeholder="Фильтр (по букве или по куску слова)" aria-label="Фильтр" aria-describedby="button-addon1">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" id="button-addon1" onclick="beginFilter()">Поиск</button>
+                </div>
+            </div>
+            {% if filter %}
+                <span>Фильтр по "{{filter}}*"</span>
+                <button class="btn btn-outline-primary" onclick="location = '/'">Удалить фильтр</button>
+            {% endif %}
         </div>
 
         {% for card in cards %}

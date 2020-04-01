@@ -51,7 +51,7 @@ app.get('/begins/:start', (req, res) => {
         return a.startsWith(wordStart);
     });
 
-    res.render('index.html', { cards: filteredCards, sources, sourcesArr: sourcesToArray() });
+    res.render('index.html', { cards: filteredCards, sources, sourcesArr: sourcesToArray(), filter: wordStart });
 });
 
 app.post('/postedit/:id', (req, res) => {

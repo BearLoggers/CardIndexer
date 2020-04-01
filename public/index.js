@@ -189,6 +189,13 @@ function saveInputToCookies() {
 
 setInterval(() => saveInputToCookies(), 1000);
 
+function beginFilter() {
+    let start = document.getElementById('beginInput').value;
+
+    if (start)
+        location = `/begins/${start}`;
+}
+
 function loadInputFromCookies() {
     const title = Cookies.get('title'),
         subtitle = Cookies.get('subtitle'),
