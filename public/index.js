@@ -48,6 +48,25 @@ function sendCard() {
     });
 }
 
+function updateNotes() {
+    let notes = document.getElementById('notesTextarea').value;
+
+    sendPOST('/updatenotes', {notes}).then(ans => {
+        console.log(ans);
+
+        location.reload();
+
+    }).catch(err => {
+        Swal.fire(
+            'О нет!',
+            'Что-то прошло не так при отправке! Информация отправлена в консоль браузера (F12)',
+            'error'
+        );
+
+        console.error(err);
+    })
+}
+
 function edit(id) {
     location = `/edit/${id}`;
 }

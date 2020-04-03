@@ -31,6 +31,15 @@
             {% endif %}
         </div>
 
+        <hr class="mt-5">
+        <div class="text-center">
+            <h3>Заметки:</h3>
+            <p>(Оставляйте какие буквы у вас в прогрессе, или просто пишите свои замечания)</p>
+            <textarea id="notesTextarea" class="p-2">{{ notes }}</textarea><br>
+            <button class="btn btn-primary" onclick="updateNotes()">Обновить заметки</button>
+        </div>
+        <hr class="mb-5">
+
         {% for card in cards %}
         <div class="card">
             <div class="card-body">

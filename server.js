@@ -24,6 +24,9 @@ let cards = require('./json/cards.json');
 if (!fs.existsSync('./json/sources.json')) fs.writeFileSync('./json/sources.json', '{}', 'utf8');
 let sources = require('./json/sources.json');
 
+if (!fs.existsSync('./notes.txt')) fs.writeFileSync('./notes.txt', '', 'utf8');
+let notes = fs.readFileSync('./notes.txt');
+
 app.post('/secretpassword', (req, res) => {
     if (!req.body.password) return res.sendStatus(400);
 
@@ -53,11 +56,11 @@ app.get('/exit', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-    res.render('index.html', { cards, sources, sourcesArr: sourcesToArray() });
+    res.render('index.html', { cards, sources, sourcesArr: sourcesToArray(), notes });
 });
 
 app.get('/print', (req, res) => {
-    res.render('print.html', { cards, sources, sourcesArr: sourcesToArray() });
+    res.render('print.html', { cards, sources, sourcesArr: sourcesToArray(), notes });
 });
 
 app.get('/edit/:id', (req, res) => {
@@ -81,7 +84,7 @@ app.get('/begins/:start', (req, res) => {
         return a.startsWith(wordStart);
     });
 
-    res.render('index.html', { cards: filteredCards, sources, sourcesArr: sourcesToArray(), filter: wordStart });
+    res.render('index.html', { cards: filteredCards, sources, sourcesArr: sourcesToArray(), filter: wordStart, notes });
 });
 
 app.post('/postedit/:id', (req, res) => {
@@ -99,6 +102,16 @@ app.post('/postedit/:id', (req, res) => {
             break;
         }
     }
+
+    res.send({ok: true, error: null});
+});
+
+app.post('/updatenotes', (req, res) => {
+    //console.log('Got notes:', req.body.notes);
+    if (!req.body.notes) res.status(400);
+
+    notes = req.body.notes;
+    fs.writeFileSync('./notes.txt', notes);
 
     res.send({ok: true, error: null});
 });
