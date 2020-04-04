@@ -88,6 +88,13 @@ function sendEdit(id) {
     });
 }
 
+function capitalizeFirst() {
+    let input = document.getElementById('titleInput');
+    let v = input.value;
+
+    input.value = v.substr(0, 1).toLocaleUpperCase() + v.substr(1);
+}
+
 const stessMap = {
     'А': 'А́',
     'а': 'а́',
