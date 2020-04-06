@@ -214,7 +214,7 @@ function loadInputFromCookies() {
         Cookies.remove('content');*/
     }
 }
-loadInputFromCookies();
+// loadInputFromCookies();
 
 function sendSource() {
     const card = assembleSource();
